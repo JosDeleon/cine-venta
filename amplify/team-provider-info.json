@@ -10,6 +10,11 @@
       "StackName": "amplify-cineventa-dev-03333",
       "StackId": "arn:aws:cloudformation:us-east-2:426968083604:stack/amplify-cineventa-dev-03333/54e06a70-39a3-11ee-afe9-0a920b5700c5",
       "AmplifyAppId": "dp6tqybdc368m"
+    },
+    "categories": {
+      "api": {
+        "cineventa": {}
+      }
     }
   }
 }
