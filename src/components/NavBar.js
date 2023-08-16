@@ -5,7 +5,8 @@ function NavBar() {
     return(
         <Flex 
             direction='row'
-            backgroundColor="black" 
+            backgroundColor="#55efc4" 
+            backgroundImage="linear-gradient(315deg, #55efc4 0%, #000000 74%)"
             style={{flexDirection: 'row', alignItems: 'center', justifyContent:'center'}}
             height='4.0rem'
         >   
@@ -14,7 +15,7 @@ function NavBar() {
                 as='div'
                 height='4.0rem'
                 width='2.8rem'
-                style={{ flexDirection: 'column', alignItems: 'baseline'}}
+                style={{ flexDirection: 'column'}}
             >            
                 <Icon 
                     ariaLabel='Javascript' 
