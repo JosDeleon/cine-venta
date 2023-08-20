@@ -14,6 +14,13 @@
     "categories": {
       "api": {
         "cineventa": {}
+      },
+      "function": {
+        "cineventaemail": {
+          "sesEmail": "jose.deleon@galileo.edu",
+          "deploymentBucketName": "amplify-cineventa-dev-03333-deployment",
+          "s3Key": "amplify-builds/cineventaemail-442f504734466f4e4a55-build.zip"
+        }
       }
     }
   }

@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import MovieDisplay from '../components/MovieDisplay';
+import { listPeliculas } from '../graphql/queries';
+import { createPelicula } from '../graphql/mutations';
+import { GRAPHQL_AUTH_MODE } from '@aws-amplify/api';
+import { API } from 'aws-amplify';
 
 const config = {
   headers: {
@@ -10,30 +14,51 @@ const config = {
 };
 
 const urlInfoPeliculas = 'https://api.themoviedb.org/3/movie/popular?language=es-GT&page=1&api_key=5730e4cca054fb790a46e66dba1f57b6';
+const idPelis = [ 569094, 667538, 298618, 346698];
 
 function Landing(){
-    useEffect(() =>{
+    useEffect( () =>{
+        getValores()
         getPeliculas();
     }, []);
     
     const [ peliculas, setPeliculas ] = useState([]);
+    const [ valores, setValores ] = useState([]);
+    const [ cargaValores, setCargaValores ] = useState(false);
     
     const getPeliculas = () => {
         axios.get(urlInfoPeliculas, config)
         .then( res => {
-            const peliculasObtenidas = res.data.results;
+            const peliculasObtenidas = res.data.results.filter( pelicula => idPelis.includes(pelicula.id));
             setPeliculas(peliculasObtenidas.slice(0, 5));
         })
         .catch( err => {
             console.log("ERROR =>", err);
         });
     }
+    
+    const getValores = async () => {
+        try {
+            const { data } = await API.graphql({
+                query: listPeliculas,
+                authMode: GRAPHQL_AUTH_MODE.API_KEY
+            });
+            setValores(data.listPeliculas.items)
+            setCargaValores(true);
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
-    return(
+    if(!cargaValores){
+        return (<h1>Cargando Informacion...</h1>);
+    }
+
+    return( 
         <>
             {
                 peliculas.map( (pelicula, id) => (
-                    <MovieDisplay key={id} info={pelicula}/>
+                    <MovieDisplay key={id} info={pelicula} peliValor={valores[id].valor}/>
                 ))
             }
         </>

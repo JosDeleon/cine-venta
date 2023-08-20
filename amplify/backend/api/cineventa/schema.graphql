@@ -2,22 +2,42 @@
 # all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
 input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
 
-type Funcion @model {
-  id: ID!
-  pelicula: String!
-  sede: String!
+type Funcion @model @aws_api_key {
+  id: ID! 
+  sede: Sede! @index(name: "porSedePeliculaSala", sortKeyFields: [ "sala", "idPelicula", "fecha" ] ,queryField : "funcionPorSedePeliculaSala")
+  idPelicula: Int! 
   sala: Sala!
-  horario: Horario!
+  fecha: String!
+  hora: String!
   asientos: [Int]!
 }
 
-enum Sala {
-  VIP
-  REG
+type Pelicula @model @aws_api_key{
+  id: ID
+  pelicula: String!
+  valor: Float!
 }
 
-enum Horario {
-  MAT
-  VES
-  NOC
+type Reserva @model @aws_api_key{
+  id: ID
+  email: String!
+  titulo: String!
+  asientos: Int!
+  valor: Float!
+  fecha: String!
+  url: String
 }
+
+enum Sede {
+  N
+  R
+  Z1
+  Z6
+}
+enum Sala {
+  VIP1
+  VIP2
+  REG1
+  REG2
+}
+

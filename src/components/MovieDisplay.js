@@ -1,11 +1,13 @@
-import { Card, Image, View, Heading, Flex, Badge, Text, Button, useTheme, Rating } from '@aws-amplify/ui-react';
+import { Card, Image, View, Heading, Flex, Text, Button, useTheme, Rating } from '@aws-amplify/ui-react';
 import { useNavigate } from 'react-router-dom';
+
 
 function MovieDisplay(props){
     const nav = useNavigate();
     const { tokens } = useTheme();
-    const { overview: descripcion, poster_path: posterPelicula, title: titulo, vote_average, id, backdrop_path: fondo } = props.info;
-    
+    const { overview: descripcion, poster_path: posterPelicula, title: titulo, vote_average, id: idPelicula, backdrop_path: fondo } = props.info;
+    const peliValor = props.peliValor;
+
     const calificacion = Math.round(vote_average/2);
     
     return(
@@ -25,7 +27,19 @@ function MovieDisplay(props){
                         <Heading level={5}>{titulo}</Heading>
                         <Text as='span'>{descripcion}</Text>
                         <br />
-                        <Button variation='primary' alignSelf='flex-end' onClick={() => {nav("/tickets", { state:{ idPeli: id, valor: 20, nombre: titulo, pantalla: fondo }})}}>Comprar Boletos</Button>
+                        <Button 
+                            variation='primary' 
+                            alignSelf='flex-end' 
+                            onClick={() => {
+                                nav("/tickets", { 
+                                    state: { 
+                                        idPeli: idPelicula, 
+                                        valor: peliValor, 
+                                        nombre: titulo, 
+                                        pantalla: fondo 
+                                    }
+                                })}
+                            }>Comprar Boletos</Button>
                         <Flex direction='row'>
                             <Text as='span'>Clasificación General: </Text>
                             <Rating value={calificacion} maxValue={5} fillColor="hsl(300, 95%, 30%)" emptyColor="hsl(210, 5%, 94%)" />

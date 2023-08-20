@@ -4,10 +4,12 @@
   "private": true,
   "dependencies": {
     "@aws-amplify/ui-react": "^5.1.0",
+    "@aws-sdk/client-ses": "^3.395.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "aws-amplify": "^5.3.7",
+    "aws-sdk": "^2.1440.0",
     "axios": "^1.4.0",
     "clsx": "^2.0.0",
     "react": "^18.2.0",
@@ -15,6 +17,7 @@
     "react-dom": "^18.2.0",
     "react-icons": "^4.10.1",
     "react-scripts": "5.0.1",
+    "sweetalert2": "^11.7.26",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -42,6 +45,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "react-router-dom": "^6.15.0"
   }
 }
