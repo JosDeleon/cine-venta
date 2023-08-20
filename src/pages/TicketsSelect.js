@@ -93,7 +93,6 @@ function TicketsSelect(){
             confirmButtonColor: '#008b8b',
             showLoaderOnConfirm: true,
             allowOutsideClick: false,
-        //    allowOutsideClick: () => !Swal.isLoading()
             preConfirm: (correo) => {
                 crearReservaDB(correo);
                 if(crearFuncion){
