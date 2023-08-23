@@ -27,9 +27,14 @@ function MovieDisplay(props){
                         <Heading level={5}>{titulo}</Heading>
                         <Text as='span'>{descripcion}</Text>
                         <br />
+                        <Flex direction='row' marginTop={{large: '4rem'}}>
+                            <Text as='span'>Clasificación General: </Text>
+                            <Rating value={calificacion} maxValue={5} fillColor="hsl(300, 95%, 30%)" emptyColor="hsl(210, 5%, 94%)" />
+                        </Flex>
                         <Button 
                             variation='primary' 
-                            alignSelf='flex-end' 
+                            alignSelf='flex-end'
+                            style={{marginRight: '4%'}}
                             onClick={() => {
                                 nav("/tickets", { 
                                     state: { 
@@ -40,10 +45,7 @@ function MovieDisplay(props){
                                     }
                                 })}
                             }>Comprar Boletos</Button>
-                        <Flex direction='row'>
-                            <Text as='span'>Clasificación General: </Text>
-                            <Rating value={calificacion} maxValue={5} fillColor="hsl(300, 95%, 30%)" emptyColor="hsl(210, 5%, 94%)" />
-                        </Flex>
+                        
                     </Flex>
                 </Flex>
             </Card>

@@ -1,0 +1,8 @@
+.amplify-menu-content {
+  --amplify-components-button-color: black;
+}
+
+.amplify-menu-trigger {
+  --amplify-components-button-border-color: white;
+  --amplify-components-button-color: white;
+}

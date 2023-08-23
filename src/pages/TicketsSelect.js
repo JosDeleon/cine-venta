@@ -1,9 +1,11 @@
 import './Seats.css';
 import 'react-calendar/dist/Calendar.css';
+// import 'react-credit-cards/es/styles-compiled.css';
 import clsx from "clsx";
 import Calendar from 'react-calendar';
 import Swal from 'sweetalert2';
-import { Badge, Button, Card, Flex, Grid, Heading, Image, Radio, RadioGroupField, SelectField, TabItem, Tabs, View } from "@aws-amplify/ui-react";
+// import Cards from 'react-credit-cards';
+import { Badge, Button, Card, Flex, Grid, Heading, Image, Radio, RadioGroupField, SelectField, TabItem, Tabs, /*TextField, */ View } from "@aws-amplify/ui-react";
 import { useEffect, useState } from "react";
 import { useLocation } from 'react-router-dom';
 import { listFuncions } from '../graphql/queries';
@@ -19,17 +21,26 @@ const formatFecha = (fecha) => {
   
 const seats = Array.from({ length: 8 * 8 }, (_, i) => i);
 const salas = ["REG1", "REG2", "VIP1", "VIP2"];
+// const card = {
+//     cvc: '',
+//     expiry: '',
+//     focus: '',
+//     name: '',
+//     number: '',
+//     issuer: ''
+// };
 
 function TicketsSelect(){
     const nav = useNavigate();
     const { state } = useLocation();
     const valor = state.valor;
     
+    // const [ cardInfo, setCardInfo ] = useState(card);
+    // const [ showCard, setShowCard ] = useState(false);
     const [ idFuncion, setIdFuncion ] = useState('');
     const [ ocupados, setOcupados ] = useState([]);
     const [ libres, setLibres ] = useState([]);
 
-    // const [ valor, setValor ] = useState(state.valor);
     const [ total, setTotal ] = useState(0);
     const [ sala, setSala ] = useState('REG1');
     const [ hora, setHora ] = useState('11');
@@ -93,6 +104,8 @@ function TicketsSelect(){
             confirmButtonColor: '#008b8b',
             showLoaderOnConfirm: true,
             allowOutsideClick: false,
+            allowEscapeKey: false,
+            allowEnterKey: false,
             preConfirm: (correo) => {
                 crearReservaDB(correo);
                 if(crearFuncion){
@@ -100,31 +113,21 @@ function TicketsSelect(){
                 } else {
                     actualizarFuncion();
                 }
-                // return fetch(`//api.github.com/users/${login}`)
-                // .then(response => {
-                //     if (!response.ok) {
-                //     throw new Error(response.statusText)
-                //     }
-                //     return response.json()
-                // })
-                // .catch(error => {
-                //     Swal.showValidationMessage(
-                //     `Request failed: ${error}`
-                //     )
-                // })
             }
         }).then( res => {
             console.log("==EXITO AL RESERVAR BOLETOS==");
             console.log(res);
             console.log("=============================");
-            Swal.fire({
-                icon: 'success',
-                title: 'Reserva Confirmada',
-                showConfirmButton: false,
-                timer: 1500
-            }).then(() => {
-                nav("/");
-            });
+            if(res.isConfirmed){
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Reserva Confirmada',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    nav("/");
+                });
+            }
         }).catch( err => {
             console.log("==ERROR AL RESERVAR BOLETOS==");
             console.log(err);
@@ -195,12 +198,11 @@ function TicketsSelect(){
                 setOcupados(asientos);
                 asientos.forEach(asiento => {
                     if(libres.includes(asiento)){
-
                         libres.splice(libres.indexOf(asiento), 1);
-                        // libres.pop(asiento);
                     }
                 });
-
+            } else {
+                setOcupados([]);    
             }
         }).catch( err => {
             setCrearFuncion(true);
@@ -251,6 +253,16 @@ function TicketsSelect(){
             console.log("=============================")
         })
     }
+
+    // const handleInputFocus = (e) => {
+    //     setCardInfo({ ...cardInfo,  focus: e.target.name });
+    // }
+      
+    // const handleInputChange = (e) => {
+    //     const { name, value } = e.target;
+        
+    //     setCardInfo({ ...cardInfo, [name] : value});
+    // }
 
     return(
         <Grid 
@@ -328,6 +340,82 @@ function TicketsSelect(){
                     </Flex>
                 </Card>
             </View>
+            {/* { showCard && 
+                <Flex direction='row' style={{display: 'flex', alignContent: 'center', justifyContent:' center'}} columnSpan={2}>
+                    <View>
+                        <Cards 
+                            cvc={cardInfo.cvc}
+                            expiry={cardInfo.expiry}
+                            focused={cardInfo.focus}
+                            name={cardInfo.name}
+                            number={cardInfo.number}
+                        >
+                        </Cards>
+                        
+                    </View>
+                    <View>
+                        <form>
+                            <TextField 
+                                variation='quiet'
+                                type='text' 
+                                name='name'
+                                label='Nombre de la tarjeta'
+                                placeholder='Nombre de la tarjeta'
+                                size='small'
+                                pattern="[a-z A-Z-]+"
+                                required
+                                onChange={handleInputChange}
+                                onFocus={handleInputFocus}
+                            ></TextField>
+                            <TextField 
+                                variation='quiet'
+                                type='tel'
+                                name='number'
+                                size='small'
+                                label='Numero de la tarjeta'
+                                placeholder='Numero de la tarjeta'
+                                maxLength={16}
+                                pattern="[\d]{16}"
+                                required
+                                onChange={handleInputChange}
+                                onFocus={handleInputFocus}
+                            ></TextField>
+                            <TextField 
+                                variation='quiet'
+                                size='small'
+                                type='tel'
+                                name='expiry'
+                                className='form-control'
+                                label='Expiración'
+                                placeholder='Expiración'
+                                maxLength={5}
+                                pattern="[\d\d/\d\d]"
+                                required
+                                onChange={handleInputChange}
+                                onFocus={handleInputFocus}
+                            ></TextField>
+                            <TextField 
+                                variation='quiet'
+                                size='small'
+                                type='tel'
+                                name='cvc'
+                                label='CVC'
+                                placeholder='CVC'
+                                maxLength={3}
+                                pattern="[0-9]+"
+                                required
+                                onChange={handleInputChange}
+                                onFocus={handleInputFocus}
+                            ></TextField>
+                            <TextField 
+                                type='hidden' name='issuer' value={cardInfo.issuer}
+                            ></TextField>
+                            <button>Submit</button>
+                        </form>
+                        
+                    </View>
+                </Flex>
+            } */}
         </Grid>
     );
 }
