@@ -29,7 +29,7 @@ function Landing(){
     const getPeliculas = () => {
         axios.get(urlInfoPeliculas, config)
         .then( res => {
-            console.log(res)
+            // console.log(res)
             const peliculasObtenidas = res.data.results.filter( pelicula => idPelis.includes(pelicula.id));
             setPeliculas(peliculasObtenidas.slice(0, 5));
         })
@@ -44,7 +44,7 @@ function Landing(){
                 query: listPeliculas,
                 authMode: GRAPHQL_AUTH_MODE.API_KEY
             });
-            console.log(data.listPeliculas.items)
+            // console.log(data.listPeliculas.items)
             setValores(data.listPeliculas.items)
             setCargaValores(true);
         } catch (error) {

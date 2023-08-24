@@ -1,5 +1,6 @@
 import 'react-calendar/dist/Calendar.css';
 import Calendar from 'react-calendar';
+// import Chart from 'react-google-charts';
 import { useState } from "react";
 import { Card, Flex, Grid, Heading, Table, TableBody, TableCell, TableHead, TableRow, ThemeProvider, ToggleButton, ToggleButtonGroup, View } from "@aws-amplify/ui-react";
 import { listFuncions } from "../graphql/queries";
@@ -48,16 +49,28 @@ const infoFunciones = {
 };
 
 const idPelis = [ '569094', '667538', '298618', '346698'];
+// const sedes = ['N', 'R', 'Z1', 'Z6'];
+
+// const dataChar = [
+//     ["Sede", "Funciones"],
+//     ["Naranjo", 0],
+//     ["Roosevelt", 0],
+//     ["Zona 10", 0],
+//     ["Zona 16", 0]
+// ];
+  
+// const options = { is3D: true };
 
 function Reports() {
-    useEffect(() => {
-        getFuncionesFecha(formatFecha(new Date()))
-    }, []);
     
     const [ dataTabla, setDataTabla ] = useState(infoFunciones);
     const [ tipoReporte, setTipoReporte ] = useState('generales');
+    const [ funciones, setFunciones ] = useState([]);
     const [ fecha, setFecha ] = useState(formatFecha(new Date()));
     
+    useEffect(() => {
+        getFuncionesFecha(formatFecha(new Date()));
+    }, [dataTabla]);
     
     const getFuncionesFecha = async (fecha) => {
         await API.graphql(graphqlOperation(listFuncions, {
@@ -69,31 +82,40 @@ function Reports() {
             authMode: GRAPHQL_AUTH_MODE.API_KEY
         })).then( ({data}) => {
             console.log("ResultadoDB: ",data.listFuncions.items)
-            const resultadoFunciones = data.listFuncions.items;
-            
+            setFunciones(data.listFuncions.items)
+            const resultadoFunciones = data.listFuncions.items.length > 0 ?  data.listFuncions.items : infoFunciones;
+
             idPelis.map( id => {
                 dataTabla[id].reg = 0;
                 dataTabla[id].vip = 0;
             })
-
-            resultadoFunciones.map( (funcion) => {
+    
+            const vaee = resultadoFunciones.map( (funcion) => {
                 const { idPelicula, sala, asientos } = funcion;
                 if(sala === 'REG1' || sala === 'REG2'){
                     dataTabla[idPelicula].reg = dataTabla[idPelicula].reg + asientos.length
                 } else {
                     dataTabla[idPelicula].vip = dataTabla[idPelicula].vip + asientos.length
                 }
-            })
+                return dataTabla;
+            });
+    
+            console.log("===============================================")
+            console.log(vaee)
+            console.log("===============================================")
+            console.log(vaee[0])
+            console.log("===============================================")
+            setDataTabla(vaee[0])
         }).catch( err => {
             console.log(err)
         });
-    }
+    };
 
     const handleFechaChange = (e) => {
         let fechaSeleccionada = `${e.getDate()}/${e.getMonth()}/${e.getFullYear()}`;
         setFecha(fechaSeleccionada);
         getFuncionesFecha(fechaSeleccionada);
-    }
+    };
 
     return(
         <Grid
@@ -102,7 +124,7 @@ function Reports() {
         > 
             <Flex direction={{base: 'column', large: 'row'}} columnSpan={3} width='100%'>
 
-                <Flex direction='column' width='19%'>
+                <Flex direction='column' width={{base: '100%', large: '19%'}}>
                     <Heading level={5}>Película</Heading>
                     <ToggleButtonGroup
                         value={tipoReporte}
@@ -116,10 +138,10 @@ function Reports() {
                         <ToggleButton value='3' width='100%'> ALGO AQUI </ToggleButton> */}
                     </ToggleButtonGroup>
                     <View style={{ marginTop: '0.8rem'}}>
-                        <Calendar onChange={handleFechaChange} calendarType='gregory' />
+                        <Calendar onChange={handleFechaChange} calendarType='gregory'/>
                     </View>
                 </Flex>
-                <Flex direction='row' marginTop='2.5rem'>
+                <Flex direction='column' marginTop='2.5rem'>
                     <ThemeProvider theme={theme} colorMode='dark'>
                         <Card variation='elevated'>
                             <Table
@@ -169,6 +191,16 @@ function Reports() {
                             </Table>
                         </Card>
                     </ThemeProvider>
+                    {/* <Card>
+                        <Heading>Ocupación por Sede</Heading>
+                        <Chart
+                            chartType="PieChart"
+                            data={dataChar}
+                            options={options}
+                            width={"100%"}
+                            height={"400px"}
+                        />
+                    </Card> */}
                 </Flex>
             </Flex>
         </Grid>
