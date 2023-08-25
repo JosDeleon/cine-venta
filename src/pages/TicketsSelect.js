@@ -14,13 +14,13 @@ import { API } from 'aws-amplify';
 import { GRAPHQL_AUTH_MODE } from '@aws-amplify/api';
 import { graphqlOperation } from 'aws-amplify';
 import { useNavigate } from 'react-router-dom';
-
+//"User: arn:aws:sts::426968083604:assumed-role/PeliculaIAMRole6343a5-qhv63crch5fk7oj7rbhmu2npym-dev/APPSYNC_ASSUME_ROLE is not authorized to perform: dynamodb:Scan on resource: arn:aws:dynamodb:us-east-2:426968083604:table/Pelicula-qhv63crch5fk7oj7rbhmu2npym-dev because no permissions boundary allows the dynamodb:Scan action (Service: DynamoDb, Status Code: 400, Request ID: KTQ2EOQHBHOO29QI6TO5VC2KUNVV4KQNSO5AEMVJF66Q9ASUAAJG)"
 const formatFecha = (fecha) => {
     return `${fecha.getDate()}/${fecha.getMonth()}/${fecha.getFullYear()}`
 }
   
 const seats = Array.from({ length: 8 * 8 }, (_, i) => i);
-const salas = ["REG1", "REG2", "VIP1", "VIP2"];
+const salas = ["REG1", "REG2", "VIP1", "VIP2", "VIP3"];
 // const card = {
 //     cvc: '',
 //     expiry: '',
@@ -290,6 +290,9 @@ function TicketsSelect(){
                             <Cinema fondo={state.pantalla} pelicula={ocupados} asientosSeleccionados={libres} onSelectAsientos={ selectedSeats => setLibres(selectedSeats)}/>
                         </TabItem>
                         <TabItem title="Vip 2" onClick={() => setSala("VIP2")}>
+                            <Cinema fondo={state.pantalla} pelicula={ocupados} asientosSeleccionados={libres} onSelectAsientos={ selectedSeats => setLibres(selectedSeats)}/>
+                        </TabItem>
+                        <TabItem title="Vip 3" onClick={() => setSala("VIP3")}>
                             <Cinema fondo={state.pantalla} pelicula={ocupados} asientosSeleccionados={libres} onSelectAsientos={ selectedSeats => setLibres(selectedSeats)}/>
                         </TabItem>
                     </Tabs>

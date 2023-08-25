@@ -1,13 +1,19 @@
 {
   "api": {
-    "cineventa": {
+    "cineventa2": {
       "dependsOn": [],
       "output": {
         "authConfig": {
-          "additionalAuthenticationProviders": [],
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AWS_IAM"
+            }
+          ],
           "defaultAuthentication": {
             "apiKeyConfig": {
-              "apiKeyExpirationDays": 7
+              "apiKeyExpirationDate": "2023-10-13T23:26:28.928Z",
+              "apiKeyExpirationDays": 50,
+              "description": "api2"
             },
             "authenticationType": "API_KEY"
           }
@@ -18,7 +24,7 @@
     }
   },
   "function": {
-    "cineventaemail": {
+    "cineventa2f7c65110": {
       "build": true,
       "dependsOn": [
         {
@@ -27,7 +33,7 @@
             "GraphQLAPIEndpointOutput"
           ],
           "category": "api",
-          "resourceName": "cineventa"
+          "resourceName": "cineventa2"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -35,27 +41,19 @@
     }
   },
   "parameters": {
-    "AMPLIFY_function_cineventaemail_deploymentBucketName": {
+    "AMPLIFY_function_cineventa2f7c65110_deploymentBucketName": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "cineventaemail"
+          "resourceName": "cineventa2f7c65110"
         }
       ]
     },
-    "AMPLIFY_function_cineventaemail_s3Key": {
+    "AMPLIFY_function_cineventa2f7c65110_s3Key": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "cineventaemail"
-        }
-      ]
-    },
-    "AMPLIFY_function_cineventaemail_sesEmail": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "cineventaemail"
+          "resourceName": "cineventa2f7c65110"
         }
       ]
     }

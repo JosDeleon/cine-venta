@@ -1,26 +1,24 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-cineventa-dev-03333-authRole",
-      "UnauthRoleArn": "arn:aws:iam::426968083604:role/amplify-cineventa-dev-03333-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::426968083604:role/amplify-cineventa-dev-03333-authRole",
+      "AuthRoleName": "amplify-cineventa2-dev-170635-authRole",
+      "UnauthRoleArn": "arn:aws:iam::643404494757:role/amplify-cineventa2-dev-170635-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::643404494757:role/amplify-cineventa2-dev-170635-authRole",
       "Region": "us-east-2",
-      "DeploymentBucketName": "amplify-cineventa-dev-03333-deployment",
-      "UnauthRoleName": "amplify-cineventa-dev-03333-unauthRole",
-      "StackName": "amplify-cineventa-dev-03333",
-      "StackId": "arn:aws:cloudformation:us-east-2:426968083604:stack/amplify-cineventa-dev-03333/54e06a70-39a3-11ee-afe9-0a920b5700c5",
-      "AmplifyAppId": "dp6tqybdc368m",
-      "PermissionsBoundaryPolicyArn": "arn:aws:iam::aws:policy/AdministratorAccess-Amplify"
+      "DeploymentBucketName": "amplify-cineventa2-dev-170635-deployment",
+      "UnauthRoleName": "amplify-cineventa2-dev-170635-unauthRole",
+      "StackName": "amplify-cineventa2-dev-170635",
+      "StackId": "arn:aws:cloudformation:us-east-2:643404494757:stack/amplify-cineventa2-dev-170635/e16852e0-42d2-11ee-a048-023365237787",
+      "AmplifyAppId": "dgbpkpz8uc2mh"
     },
     "categories": {
       "api": {
-        "cineventa": {}
+        "cineventa2": {}
       },
       "function": {
-        "cineventaemail": {
-          "sesEmail": "jose.deleon@galileo.edu",
-          "deploymentBucketName": "amplify-cineventa-dev-03333-deployment",
-          "s3Key": "amplify-builds/cineventaemail-442f504734466f4e4a55-build.zip"
+        "cineventa2f7c65110": {
+          "deploymentBucketName": "amplify-cineventa2-dev-170635-deployment",
+          "s3Key": "amplify-builds/cineventa2f7c65110-79585249395734495053-build.zip"
         }
       }
     }

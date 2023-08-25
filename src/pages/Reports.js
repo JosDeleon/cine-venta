@@ -100,11 +100,11 @@ function Reports() {
                 return dataTabla;
             });
     
-            console.log("===============================================")
-            console.log(vaee)
-            console.log("===============================================")
-            console.log(vaee[0])
-            console.log("===============================================")
+            // console.log("===============================================")
+            // console.log(vaee)
+            // console.log("===============================================")
+            // console.log(vaee[0])
+            // console.log("===============================================")
             setDataTabla(vaee[0])
         }).catch( err => {
             console.log(err)

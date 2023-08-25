@@ -37,6 +37,7 @@ enum Sede {
 enum Sala {
   VIP1
   VIP2
+  VIP3
   REG1
   REG2
 }

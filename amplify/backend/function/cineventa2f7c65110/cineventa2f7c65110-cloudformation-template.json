@@ -16,16 +16,13 @@
     "s3Key": {
       "Type": "String"
     },
-    "apicineventaGraphQLAPIIdOutput": {
+    "apicineventa2GraphQLAPIIdOutput": {
       "Type": "String",
-      "Default": "apicineventaGraphQLAPIIdOutput"
+      "Default": "apicineventa2GraphQLAPIIdOutput"
     },
-    "apicineventaGraphQLAPIEndpointOutput": {
+    "apicineventa2GraphQLAPIEndpointOutput": {
       "Type": "String",
-      "Default": "apicineventaGraphQLAPIEndpointOutput"
-    },
-    "sesEmail": {
-      "Type": "String"
+      "Default": "apicineventa2GraphQLAPIEndpointOutput"
     }
   },
   "Conditions": {
@@ -58,12 +55,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "cineventaemail",
+            "cineventa2f7c65110",
             {
               "Fn::Join": [
                 "",
                 [
-                  "cineventaemail",
+                  "cineventa2f7c65110",
                   "-",
                   {
                     "Ref": "env"
@@ -80,9 +77,6 @@
             },
             "REGION": {
               "Ref": "AWS::Region"
-            },
-            "SES_EMAIL": {
-              "Ref": "sesEmail"
             }
           }
         },
@@ -103,12 +97,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "cineventaLambdaRoleb85c3b0a",
+            "cineventa2LambdaRole87d789d7",
             {
               "Fn::Join": [
                 "",
                 [
-                  "cineventaLambdaRoleb85c3b0a",
+                  "cineventa2LambdaRole87d789d7",
                   "-",
                   {
                     "Ref": "env"
@@ -176,11 +170,11 @@
               }
             },
             {
+              "Effect": "Allow",
               "Action": [
                 "ses:SendEmail",
                 "ses:SendRawEmail"
               ],
-              "Effect": "Allow",
               "Resource": "*"
             }
           ]
@@ -212,7 +206,7 @@
               ],
               "Resource": {
                 "Fn::ImportValue": {
-                  "Fn::Sub": "${apicineventaGraphQLAPIIdOutput}:GetAtt:ReservaTable:StreamArn"
+                  "Fn::Sub": "${apicineventa2GraphQLAPIIdOutput}:GetAtt:ReservaTable:StreamArn"
                 }
               }
             }
@@ -231,7 +225,7 @@
         "Enabled": true,
         "EventSourceArn": {
           "Fn::ImportValue": {
-            "Fn::Sub": "${apicineventaGraphQLAPIIdOutput}:GetAtt:ReservaTable:StreamArn"
+            "Fn::Sub": "${apicineventa2GraphQLAPIIdOutput}:GetAtt:ReservaTable:StreamArn"
           }
         },
         "FunctionName": {
