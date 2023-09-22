@@ -18,7 +18,7 @@
       "function": {
         "cineventa2f7c65110": {
           "deploymentBucketName": "amplify-cineventa2-dev-170635-deployment",
-          "s3Key": "amplify-builds/cineventa2f7c65110-79585249395734495053-build.zip"
+          "s3Key": "amplify-builds/cineventa2f7c65110-7a47627a754a47705165-build.zip"
         }
       }
     }

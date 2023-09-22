@@ -113,6 +113,7 @@ export const createReserva = /* GraphQL */ `
       email
       titulo
       asientos
+      asientoslista
       valor
       fecha
       url

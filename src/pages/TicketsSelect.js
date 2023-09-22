@@ -19,8 +19,10 @@ const formatFecha = (fecha) => {
     return `${fecha.getDate()}/${fecha.getMonth()}/${fecha.getFullYear()}`
 }
   
-const seats = Array.from({ length: 8 * 8 }, (_, i) => i);
+const seats = Array.from({ length: 8 * 8 }, (_, i) => i+1);
 const salas = ["REG1", "REG2", "VIP1", "VIP2", "VIP3"];
+
+const filas = [ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 // const card = {
 //     cvc: '',
 //     expiry: '',
@@ -33,13 +35,16 @@ const salas = ["REG1", "REG2", "VIP1", "VIP2", "VIP3"];
 function TicketsSelect(){
     const nav = useNavigate();
     const { state } = useLocation();
-    const valor = state.valor;
+    // const valor = state.valor;
     
     // const [ cardInfo, setCardInfo ] = useState(card);
     // const [ showCard, setShowCard ] = useState(false);
+    const [ valor, setValor ] = useState(state.valor);
+    const [ showPromo, setShowPromo ] = useState(false);
     const [ idFuncion, setIdFuncion ] = useState('');
     const [ ocupados, setOcupados ] = useState([]);
     const [ libres, setLibres ] = useState([]);
+    const [ seleccion, setSeleccion ] = useState([]);
 
     const [ total, setTotal ] = useState(0);
     const [ sala, setSala ] = useState('REG1');
@@ -57,6 +62,9 @@ function TicketsSelect(){
         } else {
             setTotal((valor) * libres.length)
         }
+        if(state.idPeli === 569094){
+            setShowPromo(true)
+        }
     }, [libres, esVip, valor]);
 
     useEffect(() => {
@@ -68,6 +76,7 @@ function TicketsSelect(){
     }, [sede, libres]);
 
     const crearReservaDB = async (emailReserva) => {
+        console.log(seleccion)
         await API.graphql({
             query: createReserva,
             variables: {
@@ -75,6 +84,7 @@ function TicketsSelect(){
                     email: emailReserva,
                     titulo: state.nombre,
                     asientos: libres.length,
+                    asientoslista: seleccion,
                     valor: total,
                     fecha: fecha,
                     url: state.pantalla
@@ -82,7 +92,7 @@ function TicketsSelect(){
             },
             authMode: GRAPHQL_AUTH_MODE.API_KEY
         }).then( (res) => {
-            console.log("FUNCION CREADA")
+            console.log("Reserva CREADA")
             console.log(res)
         }).catch( err => {
             console.log("==ERROR AL CREAR LA FUNCION==")
@@ -93,7 +103,7 @@ function TicketsSelect(){
 
     const handleReservaBoletos = async () => {
         console.log('intentamos ENVIAR')
-        
+        console.log(seleccion)
         Swal.fire({
             title: "Ingresa tu correo electrónico",
             text: `Ingresa tu correo electronico para recibir la confirmación de tu reserva por un total de Q.${total} para la película ${state.nombre}`,
@@ -162,6 +172,9 @@ function TicketsSelect(){
             setEsVip(false);
         }
 
+        if(e === '4'){
+            setValor(0);
+        }
         let salaSeleccionada = salas[e];
 
         setSala(salaSeleccionada);
@@ -254,6 +267,31 @@ function TicketsSelect(){
         })
     }
 
+    const handleShowPromo = () => {
+        if(showPromo){
+            return(
+                <TabItem title="Vip 3" onClick={() => setSala("VIP3")}>
+                    <Cinema fondo={state.pantalla} pelicula={ocupados} asientosSeleccionados={libres} onSelectAsientos={ selectedSeats => setLibres(selectedSeats)}/>
+                </TabItem>
+            )
+        }
+
+    }
+
+    const handleSeleccion = (libres) =>{
+        setLibres(libres);
+        const selec = libres.map( asiento => {
+            let fila = filas[Math.floor(asiento/8)];
+            let asientoSeleccionado = `${fila}${asiento}`;
+            if(!seleccion.includes(asientoSeleccionado)){
+                seleccion.push(asientoSeleccionado)
+            }
+            console.log(`${fila}${asiento}`)
+        });
+        console.log(seleccion)
+        setSeleccion(seleccion)
+    }
+
     // const handleInputFocus = (e) => {
     //     setCardInfo({ ...cardInfo,  focus: e.target.name });
     // }
@@ -280,21 +318,19 @@ function TicketsSelect(){
                     <Tabs justifyContent='center' marginBottom='0.8rem' onChange={handleSalaChange}>
                         <TabItem title="Regular 1" onClick={() => setSala("REG1")}
                         >
-                            <Cinema fondo={state.pantalla} pelicula={ocupados} asientosSeleccionados={libres} onSelectAsientos={ selectedSeats => setLibres(selectedSeats)}/>
+                            <Cinema fondo={state.pantalla} pelicula={ocupados} asientosSeleccionados={libres} onSelectAsientos={ selectedSeats => handleSeleccion(selectedSeats) }/>
                         </TabItem>
                         <TabItem title="Regular 2" onClick={() => setSala("REG2")}
                         >
-                            <Cinema fondo={state.pantalla} pelicula={ocupados} asientosSeleccionados={libres} onSelectAsientos={ selectedSeats => setLibres(selectedSeats)}/>
+                            <Cinema fondo={state.pantalla} pelicula={ocupados} asientosSeleccionados={libres} onSelectAsientos={ selectedSeats => handleSeleccion(selectedSeats)}/>
                         </TabItem>
                         <TabItem title="Vip 1" onClick={() => setSala("VIP1")}>
-                            <Cinema fondo={state.pantalla} pelicula={ocupados} asientosSeleccionados={libres} onSelectAsientos={ selectedSeats => setLibres(selectedSeats)}/>
+                            <Cinema fondo={state.pantalla} pelicula={ocupados} asientosSeleccionados={libres} onSelectAsientos={ selectedSeats => handleSeleccion(selectedSeats)}/>
                         </TabItem>
                         <TabItem title="Vip 2" onClick={() => setSala("VIP2")}>
-                            <Cinema fondo={state.pantalla} pelicula={ocupados} asientosSeleccionados={libres} onSelectAsientos={ selectedSeats => setLibres(selectedSeats)}/>
+                            <Cinema fondo={state.pantalla} pelicula={ocupados} asientosSeleccionados={libres} onSelectAsientos={ selectedSeats => handleSeleccion(selectedSeats)}/>
                         </TabItem>
-                        <TabItem title="Vip 3" onClick={() => setSala("VIP3")}>
-                            <Cinema fondo={state.pantalla} pelicula={ocupados} asientosSeleccionados={libres} onSelectAsientos={ selectedSeats => setLibres(selectedSeats)}/>
-                        </TabItem>
+                        { handleShowPromo() }
                     </Tabs>
                     <Flex direction='row' justifyContent='center'>
                         <Button 

@@ -23,6 +23,7 @@ type Reserva @model @aws_api_key{
   email: String!
   titulo: String!
   asientos: Int!
+  asientoslista: [String]!
   valor: Float!
   fecha: String!
   url: String

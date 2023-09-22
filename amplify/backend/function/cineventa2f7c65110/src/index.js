@@ -19,6 +19,11 @@ exports.handler = async event => {
       const titulo = data.titulo.S;
       const url = data.url.S;
       const valor = data.valor.N;  
+      const asientoslista = data.asientoslista.L;
+
+      const asientosEmail = asientoslista.map( asiento => {
+         return asiento.S;
+      });
 
       await ses.sendEmail({
         Destination: {
@@ -30,7 +35,7 @@ exports.handler = async event => {
           Body: {
             Html: {
               Data:   `<body>
-                        <h3>Tu reservacion de ${asientos} asientos para la pelicula ${titulo}, el dia ${fecha} por el valor de Q.${valor}, fue realizada exitosamente</h3>
+                        <h3>Tu reservacion de ${asientos} asientos, ${asientosEmail.toString()} ,para la pelicula ${titulo}, el dia ${fecha} por el valor de Q.${valor}, fue realizada exitosamente</h3>
                         <br/>
                         <img src="https://image.tmdb.org/t/p/w500${url}"/> 
                       </body>`
